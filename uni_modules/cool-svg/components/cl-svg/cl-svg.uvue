@@ -166,11 +166,7 @@ function reload() {
  */
 function onInit(e: UniNativeViewInitEvent) {
 	svgRenderer = new CoolSvg(e.detail.element);
-
-	// 立即加载 SVG 内容
-	if (svgRenderer != null) {
-		reload();
-	}
+	reload();
 }
 
 /**

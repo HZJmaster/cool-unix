@@ -110,7 +110,7 @@ const saving = ref(false);
  * 3. 请求后端接口，新增或更新地址
  */
 function save() {
-	validate(async (valid, errors) => {
+	validate((valid, errors) => {
 		if (valid) {
 			ui.showLoading(t("保存中"));
 

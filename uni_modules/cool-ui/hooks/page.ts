@@ -45,6 +45,14 @@ class Page {
 	onScroll = (callback: (top: number) => void) => {
 		scroller.on(callback);
 	};
+
+	/**
+	 * 取消监听页面滚动
+	 * @param callback 回调函数
+	 */
+	offScroll = (callback: (top: number) => void) => {
+		scroller.off(callback);
+	};
 }
 
 export function usePage(): Page {

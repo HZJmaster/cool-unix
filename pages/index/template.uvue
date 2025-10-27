@@ -42,6 +42,15 @@ type Item = {
 
 const list = computed<Item[]>(() => [
 	{
+		label: t("社交"),
+		children: [
+			{
+				label: t("帖子详情"),
+				path: "/pages/template/post/detail"
+			}
+		]
+	},
+	{
 		label: t("商城"),
 		children: [
 			{
@@ -49,7 +58,8 @@ const list = computed<Item[]>(() => [
 				path: "/pages/template/shop/goods-category"
 			},
 			{
-				label: t("商品详情")
+				label: t("商品详情"),
+				path: "/pages/template/shop/goods-detail/index"
 			},
 			{
 				label: t("商品列表、筛选")

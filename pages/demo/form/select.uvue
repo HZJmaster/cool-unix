@@ -91,6 +91,10 @@
 					</cl-list-item>
 				</cl-list>
 			</demo-item>
+
+			<demo-item :label="t('空数据')">
+				<cl-select v-model="form.selected" :options="options4"></cl-select>
+			</demo-item>
 		</view>
 	</cl-page>
 </template>
@@ -367,6 +371,8 @@ const options3 = ref<ClSelectOption[]>([
 		]
 	}
 ]);
+
+const options4 = ref<ClSelectOption[]>([]);
 
 function openSelect2() {
 	selectRef2.value!.open((value) => {

@@ -119,7 +119,7 @@ function open(options: ClActionSheetOptions) {
 	config.description = options.description ?? "";
 
 	// 更新操作列表
-	config.list = options.list;
+	config.list = [...options.list] as ClActionSheetItem[];
 
 	// 取消按钮文本
 	config.cancelText = options.cancelText ?? t("取消");

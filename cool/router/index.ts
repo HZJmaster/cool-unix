@@ -1,14 +1,28 @@
 import { PAGES, TABS } from "../ctx";
 import type { BackOptions, PageInstance, PushOptions } from "../types";
-import { storage, last, isNull, isEmpty, get, isFunction, toArray, map, debounce } from "../utils";
+import {
+	storage,
+	last,
+	isNull,
+	isEmpty,
+	get,
+	isFunction,
+	toArray,
+	map,
+	debounce,
+	nth
+} from "../utils";
 
 // 路由信息类型
 type RouteInfo = {
 	path: string;
+	query: UTSJSONObject;
+	meta: UTSJSONObject;
+	isAuth?: boolean;
 };
 
 // 跳转前钩子类型
-type BeforeEach = (to: RouteInfo, next: () => void) => void;
+type BeforeEach = (to: RouteInfo, from: PageInstance, next: () => void) => void;
 // 登录后回调类型
 type AfterLogin = () => void;
 
@@ -20,15 +34,11 @@ type Events = {
 
 // 路由核心类
 export class Router {
-	private _events = {} as Events; // 事件存储
+	private eventsMap = {} as Events; // 事件存储
 
 	// 获取缓存的路由参数
 	params() {
-		const data = storage.get("router-params") as UTSJSONObject;
-		if (isNull(data)) {
-			return {} as UTSJSONObject;
-		}
-		return data;
+		return (storage.get("router-params") ?? {}) as UTSJSONObject;
 	}
 
 	// 获取默认路径，支持 home 和 login
@@ -37,6 +47,7 @@ export class Router {
 			home: PAGES[0].path, // 首页为第一个页面
 			login: "/pages/user/login"
 		};
+
 		return get(paths, name) as string;
 	}
 
@@ -44,31 +55,41 @@ export class Router {
 	getPages(): PageInstance[] {
 		return map(getCurrentPages(), (e) => {
 			let path = e.route!;
+
 			// 根路径自动转为首页
 			if (path == "/") {
 				path = this.defaultPath("home");
 			}
+
 			// 补全路径前缀
 			if (!path.startsWith("/")) {
 				path = "/" + path;
 			}
+
 			// 获取页面样式
-			const style = PAGES.find((e) => e.path == path)?.style;
+			const page = PAGES.find((e) => e.path == path);
+			const style = page?.style;
+			const meta = page?.meta;
+
 			// 获取页面暴露的方法
 			// @ts-ignore
-			let exposed = e.vm as any;
+			const vm = e.vm as any;
+
+			let exposed = vm;
+
 			// #ifdef H5
 			exposed = get(e, "vm.$.exposed");
 			// #endif
+
 			// 获取页面 query 参数
 			const query = (get(e, "options") ?? {}) as UTSJSONObject;
+
 			return {
 				path,
-				// @ts-ignore
-				vm: e.vm!,
-				// @ts-ignore
+				vm,
 				exposed,
 				style,
+				meta,
 				query,
 				isCustomNavbar: style?.navigationStyle == "custom"
 			} as PageInstance;
@@ -109,7 +130,8 @@ export class Router {
 			complete,
 			animationType,
 			animationDuration,
-			events
+			events,
+			isAuth
 		} = options;
 
 		// 拼接 query 参数到 url
@@ -172,13 +194,15 @@ export class Router {
 		};
 
 		// 跳转前钩子处理
-		if (isFunction(this._events["beforeEach"])) {
-			(this._events["beforeEach"] as BeforeEach)(
-				{
-					path
-				},
-				next
-			);
+		if (this.eventsMap.beforeEach != null) {
+			// 当前页
+			const from = last(this.getPages());
+
+			// 跳转页
+			const to = { path, meta: this.getMeta(path), query, isAuth } as RouteInfo;
+
+			// 调用跳转前钩子
+			this.eventsMap.beforeEach(to, from!, next);
 		} else {
 			next();
 		}
@@ -191,13 +215,49 @@ export class Router {
 		});
 	}
 
-	// 返回上一页，若为首页则回首页
+	// 返回上一页
 	back(options: BackOptions | null = null) {
 		if (this.isFirstPage()) {
 			this.home();
 		} else {
-			uni.navigateBack({ ...(options ?? {}) });
+			const delta = options?.delta ?? 1;
+
+			// 执行跳转函数
+			const next = () => {
+				uni.navigateBack({ ...(options ?? {}) });
+			};
+
+			// 跳转前钩子处理
+			if (this.eventsMap.beforeEach != null) {
+				// 当前页
+				const from = last(this.getPages());
+
+				// 上一页
+				const to = nth(this.getPages(), -delta - 1);
+
+				if (to != null) {
+					// 调用跳转前钩子
+					this.eventsMap.beforeEach(
+						{
+							path: to.path,
+							query: to.query,
+							meta: to.meta ?? ({} as UTSJSONObject)
+						},
+						from!,
+						next
+					);
+				} else {
+					console.error("[router] found to page is null");
+				}
+			} else {
+				next();
+			}
 		}
+	}
+
+	// 获取页面元数据
+	getMeta(path: string) {
+		return PAGES.find((e) => path.includes(e.path))?.meta ?? ({} as UTSJSONObject);
 	}
 
 	// 执行当前页面暴露的方法
@@ -272,21 +332,21 @@ export class Router {
 			});
 		}
 		// 登录后回调
-		if (isFunction(this._events["afterLogin"])) {
-			(this._events["afterLogin"] as AfterLogin)();
+		if (this.eventsMap.afterLogin != null) {
+			this.eventsMap.afterLogin!();
 		}
 		// 触发全局 afterLogin 事件
 		uni.$emit("afterLogin");
 	}
 
 	// 注册跳转前钩子
-	beforeEach(callback: BeforeEach) {
-		this._events["beforeEach"] = callback;
+	beforeEach(cb: BeforeEach) {
+		this.eventsMap.beforeEach = cb;
 	}
 
 	// 注册登录后回调
-	afterLogin(callback: AfterLogin) {
-		this._events["afterLogin"] = callback;
+	afterLogin(cb: AfterLogin) {
+		this.eventsMap.afterLogin = cb;
 	}
 }
 

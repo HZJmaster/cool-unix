@@ -15,10 +15,19 @@
 			<slot name="prepend"></slot>
 
 			<view class="cl-select-popup__picker">
+				<cl-empty
+					v-if="noOptions"
+					:fixed="false"
+					:pt="{
+						className: '!h-[600rpx]'
+					}"
+				></cl-empty>
+
 				<cl-picker-view
 					:value="indexes"
 					:columns="columns"
 					@change-index="onChange"
+					v-else
 				></cl-picker-view>
 			</view>
 
@@ -38,7 +47,7 @@
 					>{{ cancelText }}</cl-button
 				>
 				<cl-button
-					v-if="showConfirm"
+					v-if="showConfirm && !noOptions"
 					size="large"
 					:pt="{
 						className: 'flex-1 !rounded-xl h-[80rpx]'
@@ -157,6 +166,11 @@ const ptTrigger = computed(() => parseToObject(pt.value.trigger));
 
 // 解析弹窗透传样式配置
 const ptPopup = computed(() => parseToObject(pt.value.popup));
+
+// 是否为空选项
+const noOptions = computed(() => {
+	return isEmpty(props.options);
+});
 
 // 当前选中的值
 const value = ref<any[]>([]);

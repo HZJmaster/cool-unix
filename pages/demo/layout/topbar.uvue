@@ -56,6 +56,10 @@
 				</cl-topbar>
 			</demo-item>
 
+			<demo-item :label="t('禁用返回按钮')">
+				<cl-topbar :title="t('标题')" :backable="false"> </cl-topbar>
+			</demo-item>
+
 			<demo-item :label="t('自定义返回路径')">
 				<cl-topbar :title="t('标题')" back-path="/pages/user/login">
 					<template #prepend>

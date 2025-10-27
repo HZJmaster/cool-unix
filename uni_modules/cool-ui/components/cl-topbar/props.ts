@@ -14,6 +14,7 @@ export type ClTopbarProps = {
 	color?: string;
 	backgroundColor?: string;
 	showBack?: boolean;
+	backable?: boolean;
 	backPath?: string;
 	backIcon?: string;
 	safeAreaTop?: boolean;

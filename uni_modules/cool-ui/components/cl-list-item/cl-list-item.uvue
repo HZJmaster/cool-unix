@@ -19,7 +19,8 @@
 					'is-transition': !isHover,
 					[isDark ? 'bg-surface-800' : 'bg-white']: true,
 					[isDark ? '!bg-surface-700' : '!bg-surface-50']: hoverable && isHover
-				}
+				},
+				pt.wrapper?.className
 			]"
 			:style="{
 				transform: `translateX(${swipe.offsetX}px)`
@@ -189,9 +190,10 @@ const props = defineProps({
 const { proxy } = getCurrentInstance()!;
 const slots = useSlots();
 
-// 透传样式类型定义 - 用于定义可以传入的样式属性类型
+// 透传样式类型定义
 type PassThrough = {
 	className?: string; // 根元素类名
+	wrapper?: PassThroughProps; // 包裹容器样式
 	inner?: PassThroughProps; // 内部容器样式
 	label?: PassThroughProps; // 标签文本样式
 	content?: PassThroughProps; // 内容区域样式
@@ -200,10 +202,10 @@ type PassThrough = {
 	collapse?: PassThroughProps; // 折叠内容样式
 };
 
-// 计算透传样式 - 解析传入的样式配置
+// 计算透传样式
 const pt = computed(() => parsePt<PassThrough>(props.pt));
 
-// 滑动状态类型定义 - 用于管理滑动相关的状态数据
+// 滑动状态类型定义
 type Swipe = {
 	width: number; // 滑动区域宽度
 	maxX: number; // 最大滑动距离
@@ -214,7 +216,7 @@ type Swipe = {
 	moveDirection: "right" | "left"; // 移动方向 - 实时记录手指滑动方向
 };
 
-// 滑动状态数据 - 初始化滑动状态
+// 滑动状态数据
 const swipe = reactive<Swipe>({
 	width: 0, // 滑动区域宽度,通过查询获取
 	maxX: 0, // 最大可滑动距离
@@ -268,7 +270,7 @@ function swipeTo(num: number) {
 	swipe.endX = num;
 }
 
-// 点击态状态 - 用于显示点击效果
+// 点击态状态
 const isHover = ref(false);
 
 /**

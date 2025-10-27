@@ -18,6 +18,16 @@ class Scroller {
 		cbs.push(callback);
 		this.list.set(path, cbs);
 	}
+
+	// 取消监听页面滚动
+	off = (callback: (top: number) => void) => {
+		const path = router.path();
+		const cbs = this.list.get(path) ?? [];
+		this.list.set(
+			path,
+			cbs.filter((cb) => cb != callback)
+		);
+	};
 }
 
 export const scroller = new Scroller();

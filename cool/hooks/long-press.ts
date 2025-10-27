@@ -1,5 +1,5 @@
 import { vibrate } from "@/uni_modules/cool-vibrate";
-import { onUnmounted } from "vue";
+import { onUnmounted, ref, type Ref } from "vue";
 
 // 长按触发延迟时间,单位毫秒
 const DELAY = 500;
@@ -17,7 +17,7 @@ type UseLongPress = {
 	// 清除定时器
 	clear: () => void;
 	// 是否正在长按中
-	isPressing: boolean;
+	isPressing: Ref<boolean>;
 };
 
 /**
@@ -25,12 +25,12 @@ type UseLongPress = {
  * 支持长按持续触发,可用于数字输入框等需要连续操作的场景
  */
 export const useLongPress = (): UseLongPress => {
+	// 是否正在长按中
+	const isPressing = ref(false);
 	// 长按延迟定时器
 	let pressTimer: number = 0;
 	// 重复执行定时器
 	let repeatTimer: number = 0;
-	// 是否正在长按中
-	let isPressing = false;
 
 	/**
 	 * 清除所有定时器
@@ -48,7 +48,7 @@ export const useLongPress = (): UseLongPress => {
 			repeatTimer = 0;
 		}
 		// 重置长按状态
-		isPressing = false;
+		isPressing.value = false;
 	};
 
 	/**
@@ -69,7 +69,7 @@ export const useLongPress = (): UseLongPress => {
 			vibrate(1);
 
 			// 设置长按状态
-			isPressing = true;
+			isPressing.value = true;
 			// 每100ms重复执行回调
 			// @ts-ignore
 			repeatTimer = setInterval(() => {

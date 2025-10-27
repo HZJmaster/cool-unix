@@ -644,11 +644,10 @@ async function onChange(data: number[]) {
 
 // 设置value
 function setValue(val: string) {
-	text.value = "";
-
 	// 如果值为空，使用当前时间
 	if (isNull(val) || isEmpty(val)) {
 		value.value = checkDate(dayUts().toArray());
+		text.value = "";
 	} else {
 		// 否则解析为数组
 		value.value = checkDate(dayUts(val).toArray());
@@ -660,8 +659,10 @@ function setValue(val: string) {
 function setValues(val: string[]) {
 	if (isEmpty(val)) {
 		values.value = ["", ""];
+		text.value = "";
 	} else {
 		values.value = val;
+		updateText();
 	}
 }
 

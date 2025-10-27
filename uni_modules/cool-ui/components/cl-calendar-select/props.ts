@@ -14,6 +14,8 @@ export type ClCalendarSelectProps = {
 	date?: string[];
 	mode?: ClCalendarMode;
 	dateConfig?: ClCalendarDateConfig[];
+	start?: string;
+	end?: string;
 	title?: string;
 	placeholder?: string;
 	showTrigger?: boolean;

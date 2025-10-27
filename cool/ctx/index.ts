@@ -3,6 +3,7 @@ import { isArray, parse } from "../utils";
 type Page = {
 	path: string;
 	style?: UTSJSONObject;
+	meta?: UTSJSONObject;
 };
 
 type SubPackage = {
@@ -62,7 +63,8 @@ if (isArray(ctx.subPackages)) {
 		a.pages.forEach((b) => {
 			PAGES.push({
 				path: a.root + "/" + b.path, // 拼接子包根路径和页面路径
-				style: b.style
+				style: b.style,
+				meta: b.meta
 			});
 		});
 	});

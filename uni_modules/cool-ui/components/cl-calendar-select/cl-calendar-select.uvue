@@ -20,6 +20,8 @@
 					v-model:date="date"
 					:mode="mode"
 					:date-config="dateConfig"
+					:start="start"
+					:end="end"
 					@change="onCalendarChange"
 				></cl-calendar>
 			</view>
@@ -60,6 +62,7 @@ import { isEmpty, parsePt, parseToObject } from "@/cool";
 import type { ClSelectTriggerPassThrough } from "../cl-select-trigger/props";
 import type { ClPopupPassThrough } from "../cl-popup/props";
 import { t } from "@/locale";
+import { useUi } from "../../hooks";
 
 defineOptions({
 	name: "cl-calendar-select"
@@ -96,6 +99,14 @@ const props = defineProps({
 	dateConfig: {
 		type: Array as PropType<ClCalendarDateConfig[]>,
 		default: () => []
+	},
+	// 开始日期，可选日期的开始
+	start: {
+		type: String
+	},
+	// 结束日期，可选日期的结束
+	end: {
+		type: String
 	},
 	// 选择器标题
 	title: {
@@ -151,6 +162,9 @@ const props = defineProps({
 
 // 定义事件
 const emit = defineEmits(["update:modelValue", "update:date", "change", "select"]);
+
+// UI实例
+const ui = useUi();
 
 // 弹出层引用
 const popupRef = ref<ClPopupComponentPublicInstance | null>(null);
@@ -228,6 +242,9 @@ function clear() {
 function confirm() {
 	if (props.mode == "single") {
 		if (value.value == null) {
+			ui.showToast({
+				message: t("请选择日期")
+			});
 			return;
 		}
 
@@ -240,6 +257,16 @@ function confirm() {
 		}
 	} else {
 		if (isEmpty(date.value)) {
+			ui.showToast({
+				message: t("请选择日期")
+			});
+			return;
+		}
+
+		if (date.value.length != 2) {
+			ui.showToast({
+				message: t("请选择日期范围")
+			});
 			return;
 		}
 

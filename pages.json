@@ -55,30 +55,45 @@
 					"path": "index",
 					"style": {
 						"navigationBarTitleText": "设置"
+					},
+					"meta": {
+						"isAuth": true
 					}
 				},
 				{
 					"path": "general",
 					"style": {
 						"navigationBarTitleText": "通用设置"
+					},
+					"meta": {
+						"isAuth": true
 					}
 				},
 				{
 					"path": "notice",
 					"style": {
 						"navigationBarTitleText": "通知设置"
+					},
+					"meta": {
+						"isAuth": true
 					}
 				},
 				{
 					"path": "about",
 					"style": {
 						"navigationBarTitleText": ""
+					},
+					"meta": {
+						"isAuth": true
 					}
 				},
 				{
 					"path": "cs",
 					"style": {
 						"navigationBarTitleText": "联系客服"
+					},
+					"meta": {
+						"isAuth": true
 					}
 				}
 			]
@@ -90,18 +105,27 @@
 					"path": "edit",
 					"style": {
 						"navigationBarTitleText": "编辑资料"
+					},
+					"meta": {
+						"isAuth": true
 					}
 				},
 				{
 					"path": "edit-name",
 					"style": {
 						"navigationStyle": "custom"
+					},
+					"meta": {
+						"isAuth": true
 					}
 				},
 				{
 					"path": "edit-description",
 					"style": {
 						"navigationStyle": "custom"
+					},
+					"meta": {
+						"isAuth": true
 					}
 				},
 				{
@@ -453,6 +477,12 @@
 					}
 				},
 				{
+					"path": "other/watermark",
+					"style": {
+						"navigationBarTitleText": "Watermark 水印"
+					}
+				},
+				{
 					"path": "other/day-uts",
 					"style": {
 						"navigationBarTitleText": "DayUts 日期"
@@ -493,6 +523,15 @@
 					"style": {
 						"navigationBarTitleText": "Animation 动画"
 					}
+				},
+				{
+					"path": "other/router/index",
+					"style": {
+						"navigationBarTitleText": "Router 路由"
+					}
+				},
+				{
+					"path": "other/router/query"
 				}
 			]
 		},
@@ -500,9 +539,21 @@
 			"root": "pages/template",
 			"pages": [
 				{
+					"path": "post/detail",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
 					"path": "shop/goods-category",
 					"style": {
 						"navigationBarTitleText": "商品分类"
+					}
+				},
+				{
+					"path": "shop/goods-detail/index",
+					"style": {
+						"navigationStyle": "custom"
 					}
 				},
 				{
@@ -516,6 +567,9 @@
 					"style": {
 						"navigationBarTitleText": "收货地址",
 						"enablePullDownRefresh": true
+					},
+					"meta": {
+						"isAuth": true
 					}
 				},
 				{

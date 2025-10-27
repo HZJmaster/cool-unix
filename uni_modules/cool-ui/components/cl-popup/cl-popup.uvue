@@ -90,8 +90,10 @@
 								name="close-circle-fill"
 								:size="40"
 								:pt="{
-									className:
-										'absolute right-[24rpx] text-surface-400 dark:text-surface-50'
+									className: parseClass([
+										'absolute right-[24rpx] text-surface-400',
+										[isDark, 'text-surface-50']
+									])
 								}"
 								@tap="close"
 								@touchmove.stop
@@ -121,7 +123,7 @@
 
 <script lang="ts" setup>
 import { computed, reactive, ref, watch, type PropType } from "vue";
-import { getSafeAreaHeight, isAppIOS, parsePt, parseRpx } from "@/cool";
+import { getSafeAreaHeight, isAppIOS, parseClass, parsePt, parseRpx } from "@/cool";
 import type { ClPopupDirection, PassThroughProps } from "../../types";
 import { isDark, router } from "@/cool";
 import { config } from "../../config";

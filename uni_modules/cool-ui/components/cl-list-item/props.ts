@@ -4,6 +4,7 @@ import type { ClImageProps } from "../cl-image/props";
 
 export type ClListItemPassThrough = {
 	className?: string;
+	wrapper?: PassThroughProps;
 	inner?: PassThroughProps;
 	label?: PassThroughProps;
 	content?: PassThroughProps;

@@ -13,6 +13,15 @@
 				<cl-calendar-select v-model:date="dateRange" mode="range"></cl-calendar-select>
 			</demo-item>
 
+			<demo-item :label="t('开始 / 结束')">
+				<cl-calendar-select
+					v-model:date="dateRange3"
+					mode="range"
+					:start="startDate"
+					:end="endDate"
+				></cl-calendar-select>
+			</demo-item>
+
 			<demo-item :label="t('禁用部分日期')">
 				<cl-calendar-select v-model="date" :date-config="dateConfig"></cl-calendar-select>
 			</demo-item>
@@ -185,6 +194,11 @@ const dateConfig2 = computed(() => {
 
 	return dates;
 });
+
+const dateRange3 = ref<string[]>([]);
+
+const startDate = dayUts().format("YYYY-MM-DD");
+const endDate = dayUts().add(10, "day").format("YYYY-MM-DD");
 
 function onChange(date: string[]) {
 	console.log("日期变化:", date);

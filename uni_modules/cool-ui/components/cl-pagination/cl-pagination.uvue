@@ -123,7 +123,11 @@ type PassThrough = {
 const pt = computed(() => parsePt<PassThrough>(props.pt));
 
 // 计算总页数，根据总数和每页大小向上取整
-const totalPage = computed(() => Math.ceil(props.total / props.size));
+const totalPage = computed(() => {
+	if (props.total == 0) return 1;
+
+	return Math.ceil(props.total / props.size);
+});
 
 // 绑定值
 const value = ref(props.modelValue);

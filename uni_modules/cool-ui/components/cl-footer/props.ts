@@ -3,6 +3,7 @@ import type { PassThroughProps } from "../../types";
 export type ClFooterPassThrough = {
 	className?: string;
 	content?: PassThroughProps;
+	wrapper?: PassThroughProps;
 };
 
 export type ClFooterProps = {

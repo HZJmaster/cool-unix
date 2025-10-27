@@ -34,6 +34,7 @@
 					v-if="isMp() ? popupRef?.isOpen : true"
 					class="h-full bg-transparent"
 					:current="current"
+					:disable-touch="disableTouch"
 					@change="onSwiperChange"
 				>
 					<swiper-item
@@ -404,12 +405,29 @@ function clear() {
 }
 
 /**
+ * 是否禁用触摸
+ */
+const disableTouch = ref(false);
+
+/**
  * 处理选项点击事件
  * 根据点击的选项更新选中状态，如果是叶子节点则完成选择并关闭弹窗
  *
  * @param item 被点击的选项数据
  */
 function onItemTap(item: ClListViewItem) {
+	if (disableTouch.value == true) {
+		return;
+	}
+
+	// 处理选项点击事件的主逻辑，防止重复点击，确保级联选择流程正确
+	disableTouch.value = true;
+
+	// 设置新的定时器
+	setTimeout(() => {
+		disableTouch.value = false;
+	}, 300);
+
 	// 如果选项没有值，直接返回
 	if (item[props.valueKey] == null) {
 		return;

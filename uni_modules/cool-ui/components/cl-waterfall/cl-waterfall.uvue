@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { assign } from "@/cool";
+import { assign, isNull } from "@/cool";
 import { computed, getCurrentInstance, nextTick, onMounted, ref, watch } from "vue";
 import { parsePt } from "@/cool";
 
@@ -86,9 +86,9 @@ const columns = ref<UTSJSONObject[][]>([]);
 /**
  * 获取各列的当前高度
  * 通过uni.createSelectorQuery查询DOM元素的实际高度
- * @returns Promise<number> 返回Promise对象
+ * @returns Promise<> 返回Promise对象
  */
-async function getHeight(): Promise<number> {
+async function getHeight(): Promise<void> {
 	// 等待DOM更新完成
 	await nextTick();
 
@@ -99,9 +99,14 @@ async function getHeight(): Promise<number> {
 			.selectAll(".cl-waterfall__column-inner")
 			.boundingClientRect()
 			.exec((rect) => {
-				// 提取每列的高度信息，如果获取失败则默认为0
-				heights.value = (rect[0] as NodeInfo[]).map((e) => e.height ?? 0);
-				resolve(1);
+				const nodes = rect[0] as NodeInfo[];
+
+				if (!isNull(nodes)) {
+					// 提取每列的高度信息，如果获取失败则默认为0
+					heights.value = nodes.map((e) => e.height ?? 0);
+				}
+
+				resolve();
 			});
 	});
 }

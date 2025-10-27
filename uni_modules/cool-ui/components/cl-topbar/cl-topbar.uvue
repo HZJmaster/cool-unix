@@ -15,7 +15,7 @@
 				<view v-if="showBack" class="cl-topbar__icon" @tap="back()">
 					<cl-icon
 						:pt="{
-							className: pt.back?.className
+							className: parseClass([[!backable, 'opacity-50'], pt.back?.className])
 						}"
 						:name="backIcon"
 						:size="pt.back?.size ?? 48"
@@ -79,6 +79,11 @@ const props = defineProps({
 	},
 	// 是否显示返回按钮
 	showBack: {
+		type: Boolean,
+		default: true
+	},
+	// 是否可以返回
+	backable: {
 		type: Boolean,
 		default: true
 	},
@@ -195,13 +200,15 @@ const topbarStyle = computed(() => {
 
 // 返回按钮点击事件
 function back() {
-	if (props.backPath != "") {
-		router.to(props.backPath);
-	} else {
-		if (router.isFirstPage()) {
-			router.home();
+	if (props.backable) {
+		if (props.backPath != "") {
+			router.to(props.backPath);
 		} else {
-			router.back();
+			if (router.isFirstPage()) {
+				router.home();
+			} else {
+				router.back();
+			}
 		}
 	}
 }
