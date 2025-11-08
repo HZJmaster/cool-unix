@@ -29,13 +29,6 @@
 				</cl-text>
 
 				<view
-					class="bg-surface-500 h-8 w-8 rounded-full flex flex-row items-center justify-center mr-3"
-					@tap="setSize"
-				>
-					<cl-icon name="font-size" color="white"></cl-icon>
-				</view>
-
-				<view
 					class="bg-primary-500 h-8 w-8 rounded-full flex flex-row items-center justify-center"
 					:class="{
 						'mr-24': isMp()
@@ -75,41 +68,40 @@
 							:class="{ 'mt-2': homeUser == null }"
 							type="text"
 						>
-							<cl-text
-								:pt="{
-									className: parseClass([
-										'text-xs mt-1',
-										[isDark, '!text-white-600', '!text-surface-600']
-									])
-								}"
-								>{{ t("状态") }}:<cl-text
+							<view class="flex flex-row mt-1">
+								<cl-text
 									:pt="{
-										className: parseClass([
-											'text-xs ml-1',
-											[isDark, '!text-white-600', '!text-surface-600']
-										])
+										className: 'text-xs'
+									}"
+									>{{ t("状态") }}:
+								</cl-text>
+								<cl-text
+									:pt="{
+										className: 'text-xs'
 									}"
 									>{{ homeUser?.status }}</cl-text
 								>
-							</cl-text>
+							</view>
 						</cl-skeleton>
 					</view>
 				</view>
-				<view class="flex flex-row item-center py-1">
-					<cl-button
-						rounded
-						disabled
-						color="primary"
-						:pt="{
-							className: '!bg-primary-100'
-						}"
-						><cl-text
+				<view class="flex flex-row item-center">
+					<cl-skeleton :loading="homeUser == null" type="circle">
+						<cl-button
+							rounded
+							disabled
+							color="primary"
 							:pt="{
-								className: 'text-xs !text-primary-500 flex flex-row item-center'
+								className: '!bg-primary-100 border-none'
 							}"
-							>{{ homeUser?.level }} miner</cl-text
-						>
-					</cl-button>
+							><cl-text
+								:pt="{
+									className: 'text-xs !text-primary-500 flex flex-row item-center'
+								}"
+								>{{ homeUser?.level }} miner</cl-text
+							>
+						</cl-button>
+					</cl-skeleton>
 				</view>
 			</view>
 			<view class="flex flex-row mt-5">
@@ -118,10 +110,7 @@
 					<cl-text class="font-bold mt-1">{{ homeUser?.hashRate }} TH/s</cl-text>
 					<cl-text
 						:pt="{
-							className: parseClass([
-								'text-xs ml-1',
-								[isDark, '!text-white-600', '!text-surface-600']
-							])
+							className: 'text-xs'
 						}"
 						>{{ t("哈希率") }}</cl-text
 					>
@@ -131,10 +120,7 @@
 					<cl-text class="font-bold mt-1">T {{ homeUser?.earnings }}</cl-text>
 					<cl-text
 						:pt="{
-							className: parseClass([
-								'text-xs ml-1',
-								[isDark, '!text-white-600', '!text-surface-600']
-							])
+							className: 'text-xs'
 						}"
 						>{{ t("收益") }}</cl-text
 					>
@@ -146,10 +132,7 @@
 					>
 					<cl-text
 						:pt="{
-							className: parseClass([
-								'text-xs ml-1',
-								[isDark, '!text-white-600', '!text-surface-600']
-							])
+							className: 'text-xs'
 						}"
 						>{{ t("矿工数量") }}</cl-text
 					>
@@ -235,7 +218,7 @@
 </template>
 
 <script setup lang="ts">
-import { isDark, parseClass, isMp, useRefs, useStore, request, router } from "@/cool";
+import { isDark, parseClass, isMp, useRefs, useStore, request, router, parse } from "@/cool";
 import { t } from "@/locale";
 import { config } from "@/config";
 import LocaleSet from "@/components/locale-set.uvue";
@@ -277,7 +260,7 @@ onReady(() => {
 		})
 			.then((res) => {
 				if (res != null) {
-					homeUser.value = res as HomeUserInfo;
+					homeUser.value = parse<HomeUserInfo>(res);
 				}
 			})
 			.finally(() => {
@@ -288,10 +271,6 @@ onReady(() => {
 
 function setLocale() {
 	refs.open("localeSet");
-}
-
-function setSize() {
-	refs.open("sizeSet");
 }
 </script>
 
