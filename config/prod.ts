@@ -11,7 +11,7 @@ export const prod = () => {
 	// #endif
 
 	// #ifndef H5
-	baseUrl = host + "/api";
+	baseUrl = host;
 	// #endif
 
 	return {

@@ -1346,7 +1346,7 @@ function getYAxisTextList(
 	yData: ChartOptionsYAxisData
 ): string[] {
 	if (opts.type == "candle") return getArrYAxisTextList(series, opts, config, stack, yData);
-	let data: ChartOptionsSeriesData[] = [];
+	let data: ChartOptionsSeriesData[] = [] as ChartOptionsSeriesData[];
 	if (stack == "stack") {
 		data = dataCombineStack(series, opts.categories!.length);
 	} else {

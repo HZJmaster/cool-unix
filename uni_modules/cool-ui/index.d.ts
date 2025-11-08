@@ -15,6 +15,7 @@ import type { ClColProps, ClColPassThrough } from "./components/cl-col/props";
 import type { ClCollapseProps, ClCollapsePassThrough } from "./components/cl-collapse/props";
 import type { ClCountdownProps, ClCountdownPassThrough } from "./components/cl-countdown/props";
 import type { ClCropperProps, ClCropperPassThrough } from "./components/cl-cropper/props";
+import type { ClDialerProps } from "./components/cl-dialer/props";
 import type { ClDraggableProps, ClDraggablePassThrough } from "./components/cl-draggable/props";
 import type { ClFilterBarProps } from "./components/cl-filter-bar/props";
 import type { ClFilterItemProps, ClFilterItemPassThrough } from "./components/cl-filter-item/props";
@@ -93,6 +94,7 @@ declare module "vue" {
 		"cl-collapse": (typeof import('./components/cl-collapse/cl-collapse.uvue')['default']) & import('vue').DefineComponent<ClCollapseProps>;
 		"cl-countdown": (typeof import('./components/cl-countdown/cl-countdown.uvue')['default']) & import('vue').DefineComponent<ClCountdownProps>;
 		"cl-cropper": (typeof import('./components/cl-cropper/cl-cropper.uvue')['default']) & import('vue').DefineComponent<ClCropperProps>;
+		"cl-dialer": (typeof import('./components/cl-dialer/cl-dialer.uvue')['default']) & import('vue').DefineComponent<ClDialerProps>;
 		"cl-draggable": (typeof import('./components/cl-draggable/cl-draggable.uvue')['default']) & import('vue').DefineComponent<ClDraggableProps>;
 		"cl-filter-bar": (typeof import('./components/cl-filter-bar/cl-filter-bar.uvue')['default']) & import('vue').DefineComponent<ClFilterBarProps>;
 		"cl-filter-item": (typeof import('./components/cl-filter-item/cl-filter-item.uvue')['default']) & import('vue').DefineComponent<ClFilterItemProps>;

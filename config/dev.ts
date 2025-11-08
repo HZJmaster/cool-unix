@@ -11,7 +11,7 @@ export const dev = () => {
 	// #endif
 
 	// #ifndef H5
-	baseUrl = host + "";
+	baseUrl = host;
 	// #endif
 
 	return {

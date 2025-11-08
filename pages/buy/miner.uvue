@@ -1,6 +1,6 @@
 <template>
 	<view class="border-purple-700 border-2 border-solid rounded-xl h-full">
-		<view class="flex flex-row bg-purple-100 p-3">
+		<view class="flex flex-row bg-purple-100 p-3 rounded-xl">
 			<cl-image
 				:src="`data:image/png;base64,${item?.imageBase64}`"
 				mode="aspectFit"

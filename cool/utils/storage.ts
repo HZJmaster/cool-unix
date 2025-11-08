@@ -90,15 +90,25 @@ class Storage {
 	 */
 	isExpired(key: string): boolean {
 		// 获取过期时间戳
-		const value = uni.getStorageSync(`${key}${EXPIRES_SUFFIX}`) as number | null;
+		const value = uni.getStorageSync(`${key}${EXPIRES_SUFFIX}`);
+
+		let expireTime: number | null;
+
+		if (typeof value == "string") {
+			expireTime = parseInt(value);
+		} else if (typeof value == "number") {
+			expireTime = value;
+		} else {
+			expireTime = null;
+		}
 
 		// 如果没有设置过期时间，视为已过期
-		if (value == null) {
+		if (expireTime == null) {
 			return true;
 		}
 
 		// 比较过期时间戳与当前时间，判断是否过期
-		return value - new Date().getTime() <= 0;
+		return expireTime - new Date().getTime() <= 0;
 	}
 
 	/**

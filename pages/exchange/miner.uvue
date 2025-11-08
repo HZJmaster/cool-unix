@@ -1,0 +1,75 @@
+<template>
+	<view class="border-red-300 border-2 border-solid rounded-xl h-full">
+		<view class="flex flex-row m-3 items-center justify-between">
+			<cl-image
+				:src="`data:image/png;base64,${item?.imageBase64}`"
+				mode="aspectFit"
+				:height="150"
+				:width="150"
+			>
+			</cl-image>
+			<view class="flex-1 flex flex-row ml-3 justify-between">
+				<view class="flex flex-col justify-between w-[250rpx]">
+					<view class="flex flex-row">
+						<cl-text :pt="{ className: 'text-lg font-bold' }">{{
+							t("Basic Power Pack")
+						}}</cl-text>
+					</view>
+					<view class="flex flex-row flex-wrap mt-2">
+						<cl-text :pt="{ className: 'text-xs !text-surface-500' }"
+							>{{ t("Boost mining power,") }}
+						</cl-text>
+						<cl-text :pt="{ className: 'text-xs !text-surface-500' }">
+							Daily output: +{{ 10 }}%</cl-text
+						>
+					</view>
+					<view class="flex flex-row items-center mt-2">
+						<cl-icon
+							name="text-block"
+							:size="30"
+							:pt="{ className: 'text-primary-300' }"
+						></cl-icon>
+						<cl-text :pt="{ className: 'text-xs font-bold text-primary-300 ml-1' }">
+							{{ t("Power Boost +10%") }}</cl-text
+						>
+					</view>
+				</view>
+			</view>
+			<view class="flex flex-col items-start relative overflow-visible">
+				<cl-text :pt="{ className: '!text-red-400 text-lg ml-2 font-bold' }"
+					>{{ 98000 }} Tokens</cl-text
+				>
+				<cl-button :pt="{ className: '!text-xs h-12 mt-2' }" rounded>
+					<cl-text
+						:pt="{
+							className: 'text-xs text-white flex flex-row item-center'
+						}"
+						>{{ t("Insufficient Tokens") }}</cl-text
+					>
+				</cl-button>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script setup lang="ts">
+import { computed } from "vue";
+import { parse } from "@/cool";
+import { t } from "@/locale";
+import { type MinerType } from "@/types/buy";
+
+defineOptions({
+	name: "earnMiner"
+});
+
+const props = defineProps({
+	value: {
+		type: Object,
+		default: () => ({})
+	}
+});
+
+const item = computed(() => parse<MinerType>(props.value));
+</script>
+
+<style lang="scss" scoped></style>

@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { config } from "@/config";
-import { parse, router, useStore, type Token } from "@/cool";
+import { parse, router, useStore, set, get, type Token } from "@/cool";
 import { reactive } from "vue";
 import type { LoginForm } from "./types";
 import LoginEmail from "./components/login/email.uvue";
@@ -38,11 +38,16 @@ const form = reactive<LoginForm>({
 });
 
 // 登录成功
-function toLogin(res: Token) {
-	res.expire = 1800;
-	user.setToken(parse<Token>(res)!);
-	if (res.info != null) {
-		user.set(parse<UserInfo>(res.info)!);
+function toLogin(data: any) {
+	if (data == null) {
+		console.error("数据为空");
+		return;
+	}
+	set(data, "expire", 1800);
+	user.setToken(parse<Token>(data)!);
+	const info = get(data, "info");
+	if (info != null) {
+		user.set(info);
 	}
 	router.nextLogin();
 }

@@ -25,10 +25,7 @@
 		<view class="flex flex-row justify-between mt-3">
 			<cl-text
 				:pt="{
-					className: parseClass([
-						'text-xs',
-						[isDark, '!text-white-600', '!text-surface-600']
-					])
+					className: 'text-xs'
 				}"
 				>{{ t("Hashrate Share") }}</cl-text
 			>

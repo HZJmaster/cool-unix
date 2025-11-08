@@ -114,13 +114,13 @@ const rules = new Map<string, ClFormRule[]>([
 
 // 登录
 function toLogin() {
-	validate(async (valid) => {
+	validate((valid) => {
 		if (valid) {
 			const { email, password } = props.form;
 
 			loading.value = true;
 
-			await request({
+			request({
 				url: "/mara/asap/login",
 				method: "POST",
 				data: {
@@ -129,15 +129,16 @@ function toLogin() {
 				}
 			})
 				.then((res) => {
-					emit("success", res);
+					emit("success", res as any);
 				})
 				.catch((err) => {
 					ui.showToast({
 						message: (err as Response).message!
 					});
+				})
+				.finally(() => {
+					loading.value = false;
 				});
-
-			loading.value = false;
 		}
 	});
 }

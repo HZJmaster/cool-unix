@@ -29,13 +29,6 @@
 				</cl-text>
 
 				<view
-					class="bg-surface-500 h-8 w-8 rounded-full flex flex-row items-center justify-center mr-3"
-					@tap="setSize"
-				>
-					<cl-icon name="font-size" color="white"></cl-icon>
-				</view>
-
-				<view
 					class="bg-primary-500 h-8 w-8 rounded-full flex flex-row items-center justify-center"
 					:class="{
 						'mr-24': isMp()
@@ -46,8 +39,49 @@
 				</view>
 			</view>
 		</cl-topbar>
-		<cl-text> 交换页面 </cl-text>
-
+		<view
+			class="flex flex-row items-center justify-between shadow-sm my-5 bg-primary-400 dark:!bg-surface-800 rounded-xl p-5 mx-2"
+			:class="{ 'is-dark': isDark }"
+		>
+			<view class="text-white flex flex-col justify-between">
+				<cl-text
+					:pt="{
+						className: 'text-white mb-2'
+					}"
+				>
+					{{ t("My Tokens") }}
+				</cl-text>
+				<cl-text
+					:pt="{
+						className: 'text-white text-xl font-bold'
+					}"
+					>{{ t("0.00") }}</cl-text
+				>
+			</view>
+			<view class="">
+				<cl-button
+					:rounded="true"
+					@tap="toDialer"
+					:pt="{ className: 'font-bold !bg-white !py-2 border-none' }"
+					color="primary"
+					>{{ t("Get More") }}</cl-button
+				>
+			</view>
+		</view>
+		<view class="mx-2">
+			<view class="flex flex-row justify-between item-center">
+				<cl-text :pt="{ className: '!text-xl font-bold' }">{{
+					t("Mining Power Boost")
+				}}</cl-text>
+			</view>
+		</view>
+		<view class="mx-2 mb-5">
+			<cl-list-view :data="data" :virtual="false" :pt="{ item: { className: 'mt-5' } }">
+				<template #item="{ value }">
+					<miner :value="value"></miner>
+				</template>
+			</cl-list-view>
+		</view>
 		<!-- 自定义底部导航栏 -->
 		<custom-tabbar></custom-tabbar>
 
@@ -60,14 +94,19 @@
 </template>
 
 <script setup lang="ts">
-import { isDark, parseClass, isMp, router, useRefs } from "@/cool";
+import { isDark, parseClass, isMp, useRefs, router } from "@/cool";
 import { t } from "@/locale";
 import { config } from "@/config";
 import LocaleSet from "@/components/locale-set.uvue";
 import SizeSet from "@/components/size-set.uvue";
 import CustomTabbar from "@/components/tabbar.uvue";
+import type { ClListViewItem } from "@/uni_modules/cool-ui";
+import Miner from "@/pages/exchange/miner.uvue";
+import { ref } from "vue";
 
 const refs = useRefs();
+
+const data = ref<ClListViewItem[]>([{}, {}]);
 
 function setLocale() {
 	refs.open("localeSet");
@@ -75,6 +114,10 @@ function setLocale() {
 
 function setSize() {
 	refs.open("sizeSet");
+}
+
+function toDialer() {
+	router.push({ path: "/pages/dialer/index" });
 }
 </script>
 

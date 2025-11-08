@@ -7,8 +7,8 @@ import type { UserInfo } from "@/types";
 export type Token = {
 	token: string; // 访问token
 	expire: number; // token过期时间（秒）
-	refreshToken: string; // 刷新token
-	refreshExpire: number; // 刷新token过期时间（秒）
+	// refreshToken: string; // 刷新token
+	// refreshExpire: number; // 刷新token过期时间（秒）
 	info: UserInfo;
 };
 
@@ -142,7 +142,7 @@ export class User {
 		// 访问token，提前5秒过期，防止边界问题
 		storage.set("token", data.token, data.expire - 5);
 		// 刷新token，提前5秒过期
-		storage.set("refreshToken", data.refreshToken, data.refreshExpire - 5);
+		// storage.set("refreshToken", data.refreshToken, data.refreshExpire - 5);
 	}
 
 	/**

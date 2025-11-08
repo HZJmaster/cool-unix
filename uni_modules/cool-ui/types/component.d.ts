@@ -243,3 +243,7 @@ declare type ClReadMoreComponentPublicInstance = {
 	toggle(): void;
 	getContentHeight(): void;
 };
+
+declare type ClDialerComponentPublicInstance = {
+	run(key: number): void;
+};
