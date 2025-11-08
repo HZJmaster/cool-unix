@@ -18,5 +18,8 @@
 	"[vue]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
-	"scss.lint.unknownAtRules": "ignore"
+	"scss.lint.unknownAtRules": "ignore",
+	"[xml]": {
+		"editor.defaultFormatter": "redhat.vscode-xml"
+	}
 }
